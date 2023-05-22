@@ -90,5 +90,63 @@ To implement a two-player mode in the Bowling Calculator, several modifications 
 - **Game Over Handling:** Implement game over conditions for both players. For example, if either Player 1 or Player 2 completes all frames and rolls, set the gameOver state to true for both players. This will disable further input and display the final scores for each player.
 
 By incorporating these modifications, the Bowling Calculator can provide a two-player mode where each player can take turns, enter their rolls, and view their individual scores in a friendly competition.
+
+## Code explanations
+#### State Initialization:
+```
+const [frames, setFrames] = useState(Array(10).fill([null, null]));
+const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
+const [currentRoll, setCurrentRoll] = useState(0);
+const [gameOver, setGameOver] = useState(false);
+```
+- The frames state holds an array of frames, where each frame is represented by an array with two elements for storing the roll scores.
+- The currentFrameIndex state keeps track of the index of the current frame.
+- The currentRoll state tracks the current roll within the current frame.
+- The gameOver state indicates whether the game has ended.
+#### Handle Roll Click:
+```
+const handleRollClick = (pins) => {
+  // ...
+};
+```
+This function is called when a pin button is clicked. It handles the logic for updating the frames, current frame index, current roll, and checking for game over conditions.
+
+#### Render Roll:
+```
+const renderRoll = (roll) => {
+  // ...
+};
+```
+This function takes a roll score and returns a string representation for rendering purposes. It returns "Strike" for a score of 10, "-" for a null value, or the actual score for other values.
+
+#### Calculate Frame Score:
+```
+const calculateFrameScore = (frameIndex) => {
+  // ...
+};
+```
+This function calculates the score for a specific frame based on the frame index. It considers strike and spare cases to calculate the score accordingly.
+
+#### Calculate Overall Score:
+```
+const calculateOverallScore = () => {
+  // ...
+};
+```
+This function calculates the overall score by iterating over all frames and calling the calculateFrameScore function for each frame.
+
+#### Reset Game:
+```
+const resetGame = () => {
+  // ...
+};
+```
+This function resets the game state by initializing frames, current frame index, current roll, and game over status.
+
+#### Component Render:
+The return statement renders the JSX structure of the component. It consists of HTML elements and React components that display the bowling score calculator.
+The code includes a container with a heading, a scorecard that displays each frame and its rolls, the overall score, and an input container with pin buttons and a reset button.
+
+Overall, the code represents a basic implementation of a bowling score calculator using React.
 ## Conclusion
 The Bowling Score Calculator provides a user-friendly interface to calculate and track bowling scores. With a well-structured backend and a thoughtfully designed frontend, this application offers an efficient way to enjoy and analyze bowling games.
