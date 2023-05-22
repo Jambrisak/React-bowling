@@ -12,25 +12,35 @@ const BowlingCalculator = () => {
       setGameOver(true);
       return;
     }
-
+  
+    const currentFrame = frames[currentFrameIndex];
+    const previousRoll = currentFrame[currentRoll - 1];
+  
+    // Validate the input to prevent more than 10 pins knocked down in a frame
+    if (currentRoll === 1 && previousRoll !== 10 && previousRoll + pins > 10) {
+      return;
+    }
+  
     setFrames((prevFrames) => {
       const updatedFrames = [...prevFrames];
-      const currentFrame = [...updatedFrames[currentFrameIndex]];
-
-      currentFrame[currentRoll] = pins;
-      updatedFrames[currentFrameIndex] = currentFrame;
-
+      const frameCopy = [...updatedFrames[currentFrameIndex]];
+      frameCopy[currentRoll] = pins;
+      updatedFrames[currentFrameIndex] = frameCopy;
+  
       return updatedFrames;
     });
-
+  
+    // Handle logic for advancing to the next frame or roll
     if (currentFrameIndex === 9) {
       if (currentRoll === 0 && pins === 10) {
         setCurrentRoll(1);
-      } else if (currentRoll === 1 && (frames[9][0] + pins === 10 || pins === 10)) {
+      } else if (currentRoll === 1 && (currentFrame[0] + pins === 10 || pins === 10)) {
         setCurrentRoll(2);
       } else {
         setCurrentRoll((prevRoll) => prevRoll + 1);
       }
+    } else if (currentFrameIndex === 8 && currentRoll === 0 && pins === 10) {
+      setCurrentRoll(1);
     } else if (currentRoll === 1 || pins === 10) {
       setCurrentFrameIndex((prevFrameIndex) => prevFrameIndex + 1);
       setCurrentRoll(0);
@@ -38,6 +48,7 @@ const BowlingCalculator = () => {
       setCurrentRoll((prevRoll) => prevRoll + 1);
     }
   };
+  
 
   const renderRoll = (roll) => {
     if (roll === 10) {
@@ -53,22 +64,26 @@ const BowlingCalculator = () => {
     const frame = frames[frameIndex];
     const isStrike = frame[0] === 10;
     const isSpare = frame[0] + frame[1] === 10;
-
-    if (isStrike && frameIndex < 9) {
-      const nextFrame = frames[frameIndex + 1];
-      const nextNextFrame = frames[frameIndex + 2];
-      if (nextFrame[0] === 10 && frameIndex < 8) {
-        return 20 + nextNextFrame[0];
+  
+    if (isStrike) {
+      if (frameIndex < 9) {
+        const nextFrame = frames[frameIndex + 1];
+        const nextNextFrame = frames[frameIndex + 2];
+        if (nextFrame[0] === 10 && frameIndex < 8) {
+          return 20 + nextNextFrame[0];
+        } else {
+          return 10 + nextFrame[0] + nextFrame[1];
+        }
       } else {
-        return 10 + nextFrame[0] + nextFrame[1];
+        return 10 + frame[1] + frame[2];
       }
     }
-
+  
     if (isSpare && frameIndex < 9) {
       const nextFrame = frames[frameIndex + 1];
       return 10 + nextFrame[0];
     }
-
+  
     return frame[0] + frame[1];
   };
 
