@@ -92,61 +92,110 @@ To implement a two-player mode in the Bowling Calculator, several modifications 
 By incorporating these modifications, the Bowling Calculator can provide a two-player mode where each player can take turns, enter their rolls, and view their individual scores in a friendly competition.
 
 ## Code explanations
-#### State Initialization:
+This code is a React component called `BowlingCalculator`, which implements a simple bowling score calculator. It allows users to input the number of pins knocked down in each roll of a bowling game and displays the scorecard with the calculated scores.
+
+Let's break down the code and explain its functionality in detail:
+
+1. Import Statements:
+```javascript
+import React, { useState } from 'react';
+import './BowlingCalculator.css';
 ```
+The code imports the necessary dependencies, including React and the `useState` hook for managing state within the component. It also imports a CSS file for styling the calculator.
+
+2. Functional Component Declaration:
+```javascript
+const BowlingCalculator = () => {
+  // Component implementation goes here
+};
+```
+The `BowlingCalculator` function is a functional component that represents the bowling score calculator. It contains the entire logic and JSX (HTML-like syntax) for rendering the calculator.
+
+3. State Initialization:
+```javascript
 const [frames, setFrames] = useState(Array(10).fill([null, null]));
 const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
 const [currentRoll, setCurrentRoll] = useState(0);
 const [gameOver, setGameOver] = useState(false);
 ```
-- The frames state holds an array of frames, where each frame is represented by an array with two elements for storing the roll scores.
-- The currentFrameIndex state keeps track of the index of the current frame.
-- The currentRoll state tracks the current roll within the current frame.
-- The gameOver state indicates whether the game has ended.
-#### Handle Roll Click:
-```
+The component uses the `useState` hook to manage its state. It initializes several state variables:
+- `frames` represents an array of frames, where each frame is an array of two elements (representing the number of pins knocked down in each roll of the frame). It is initialized with 10 frames, each containing `[null, null]` (indicating that no pins have been knocked down yet).
+- `currentFrameIndex` represents the index of the current frame being played.
+- `currentRoll` represents the current roll within the current frame.
+- `gameOver` is a boolean variable indicating whether the game is over or not.
+
+4. Event Handler: `handleRollClick`
+```javascript
 const handleRollClick = (pins) => {
-  // ...
+  // Event handling logic goes here
 };
 ```
-This function is called when a pin button is clicked. It handles the logic for updating the frames, current frame index, current roll, and checking for game over conditions.
+The `handleRollClick` function is called when a user clicks on a pin button to register a roll. It takes the number of pins knocked down as an argument and performs various logic to update the state and calculate scores.
 
-#### Render Roll:
+5. Updating Frames State:
+```javascript
+setFrames((prevFrames) => {
+  const updatedFrames = [...prevFrames];
+  const frameCopy = [...updatedFrames[currentFrameIndex]];
+  frameCopy[currentRoll] = pins;
+  updatedFrames[currentFrameIndex] = frameCopy;
+  return updatedFrames;
+});
 ```
+This code block updates the `frames` state when a roll is made. It uses the `setFrames` function, which takes a callback and returns the updated state. It creates a copy of the `frames` array, updates the pins value for the current roll in the current frame, and then sets the updated frame back into the copied array.
+
+6. Advancing to Next Frame/Roll:
+```javascript
+// Handle logic for advancing to the next frame or roll
+// Code omitted for brevity
+```
+This block of code handles the logic for advancing to the next frame or roll based on the current state of the game. It determines whether the game is over or if the current frame/roll combination should change and updates the `currentFrameIndex` and `currentRoll` accordingly.
+
+7. Rendering Roll:
+```javascript
 const renderRoll = (roll) => {
-  // ...
+  // Logic for rendering the roll value
 };
 ```
-This function takes a roll score and returns a string representation for rendering purposes. It returns "Strike" for a score of 10, "-" for a null value, or the actual score for other values.
+The `renderRoll` function takes a roll value as an argument and returns a string representation of the roll. It handles cases for strikes, null (no pins knocked down), and regular roll values.
 
-#### Calculate Frame Score:
-```
-const calculateFrameScore = (frameIndex) => {
-  // ...
+8. Calculating Frame Score:
+```javascript
+const
+
+ calculateFrameScore = (frameIndex) => {
+  // Logic for calculating the score of a frame
 };
 ```
-This function calculates the score for a specific frame based on the frame index. It considers strike and spare cases to calculate the score accordingly.
+The `calculateFrameScore` function takes a `frameIndex` as an argument and calculates the score for that frame. It considers different scenarios such as strikes, spares, and regular rolls to determine the frame's score.
 
-#### Calculate Overall Score:
-```
+9. Calculating Overall Score:
+```javascript
 const calculateOverallScore = () => {
-  // ...
+  // Logic for calculating the overall score
 };
 ```
-This function calculates the overall score by iterating over all frames and calling the calculateFrameScore function for each frame.
+The `calculateOverallScore` function calculates the overall score for the entire game by iterating over each frame and summing up the individual frame scores. It also handles the special case of a perfect game (all strikes) and returns the final score.
 
-#### Reset Game:
-```
+10. Resetting the Game:
+```javascript
 const resetGame = () => {
-  // ...
+  // Resetting the state variables to their initial values
 };
 ```
-This function resets the game state by initializing frames, current frame index, current roll, and game over status.
+The `resetGame` function is called when the "Reset Game" button is clicked. It resets all the state variables to their initial values, effectively restarting the game.
 
-#### Component Render:
-The return statement renders the JSX structure of the component. It consists of HTML elements and React components that display the bowling score calculator.
-The code includes a container with a heading, a scorecard that displays each frame and its rolls, the overall score, and an input container with pin buttons and a reset button.
+11. JSX Rendering:
+The return statement in the component's function body contains JSX code that describes the structure and layout of the bowling score calculator. It uses various CSS classes to style different elements of the calculator and renders the scorecard, overall score, pin buttons, and the reset button.
 
-Overall, the code represents a basic implementation of a bowling score calculator using React.
+The `frames.map` function is used to iterate over each frame in the `frames` array and render the individual frame elements with their respective roll values.
+
+12. Exporting the Component:
+```javascript
+export default BowlingCalculator;
+```
+The component is exported as the default export, allowing it to be imported and used in other parts of the application.
+
+Overall, this code implements a basic bowling score calculator using React. It manages the state of the game, handles roll input, calculates scores for frames and the overall game, and provides a user interface to interact with the calculator.
 ## Conclusion
 The Bowling Score Calculator provides a user-friendly interface to calculate and track bowling scores. With a well-structured backend and a thoughtfully designed frontend, this application offers an efficient way to enjoy and analyze bowling games.
